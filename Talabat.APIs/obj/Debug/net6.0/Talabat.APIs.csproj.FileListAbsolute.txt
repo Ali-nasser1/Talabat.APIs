@@ -70,3 +70,4 @@ D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Core.dll
 D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Repository.dll
 D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Repository.pdb
 D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Core.pdb
+D:\API Projects\Talabat.Solution\Talabat.APIs\obj\Debug\net6.0\Talabat.APIs.sourcelink.json
