@@ -71,3 +71,5 @@ D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Repositor
 D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Repository.pdb
 D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\Talabat.Core.pdb
 D:\API Projects\Talabat.Solution\Talabat.APIs\obj\Debug\net6.0\Talabat.APIs.sourcelink.json
+D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\AutoMapper.dll
+D:\API Projects\Talabat.Solution\Talabat.APIs\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
