@@ -11,13 +11,13 @@ namespace Talabat.Core.Repositories
     public interface IGenericRepository<T> where T : BaseEntity
     {
         #region Without Specification
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IReadOnlyList<T>> GetAllAsync();
 
         Task<T> GetByIdAsync(int id);
         #endregion
 
         #region With Specification
-        Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecifications<T> spec);
+        Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecifications<T> spec);
         Task<T> GetByIdWithSpecAsync(ISpecifications<T> spec);
         #endregion
     }

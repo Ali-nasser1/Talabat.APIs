@@ -28,11 +28,11 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
         {
             var spec = new ProductWithBrandAndTypeSpecifications();
             var Products = await _ProductRepo.GetAllWithSpecAsync(spec);
-            var MappedProducts = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(Products);
+            var MappedProducts = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(Products);
             return Ok(MappedProducts);
         }
 
@@ -49,14 +49,14 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet("Types")]
-        public async Task<ActionResult<IEnumerable<ProductType>>> GetTypes()
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetTypes()
         {
             var Types = await _typeRepo.GetAllAsync();
             return Ok(Types);
         }
 
         [HttpGet("Brands")]
-        public async Task<ActionResult<IEnumerable<ProductBrand>>> GetBrands()
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrands()
         {
             var Brands = await _brandsRepo.GetAllAsync(); 
             return Ok(Brands); 
