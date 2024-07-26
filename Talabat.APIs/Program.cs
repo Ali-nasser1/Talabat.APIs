@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -6,9 +7,11 @@ using Talabat.APIs.Extensions;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+using Talabat.Repository.Identity;
 
 namespace Talabat.APIs
 {
@@ -28,12 +31,21 @@ namespace Talabat.APIs
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
 
+            builder.Services.AddDbContext<AppIdentityDbContext>(Options =>
+            {
+                Options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            });
+
             builder.Services.AddSingleton<IConnectionMultiplexer>(Options =>
             {
                 var Connection = builder.Configuration.GetConnectionString("RedisConnection");
                 return ConnectionMultiplexer.Connect(Connection);
             });
+
+
             builder.Services.AddApplicationServices();
+
+            builder.Services.AddIdentityServices();
 
             #endregion
 
@@ -47,6 +59,11 @@ namespace Talabat.APIs
             {
                 var dbContext = Services.GetRequiredService<StoreContext>();
                 await dbContext.Database.MigrateAsync();
+
+                var IdentityDbContext = Services.GetRequiredService<AppIdentityDbContext>();
+                await IdentityDbContext.Database.MigrateAsync();
+                var userManager = Services.GetRequiredService<UserManager<AppUser>>();
+                await AppIdentityDbContextSeed.UserSeedAsync(userManager);
                 await StoreConextSeed.SeedAsync(dbContext);
 
             }
