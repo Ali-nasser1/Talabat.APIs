@@ -9,3 +9,8 @@ D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\Talabat.Servi
 D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\refint\Talabat.Services.dll
 D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\Talabat.Services.pdb
 D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\ref\Talabat.Services.dll
+D:\API Projects\Talabat.Solution\Talabat.Services\bin\Debug\net6.0\Talabat.Core.dll
+D:\API Projects\Talabat.Solution\Talabat.Services\bin\Debug\net6.0\Talabat.Core.pdb
+D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\Talabat.Services.csproj.AssemblyReference.cache
+D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\Talabat.Services.sourcelink.json
+D:\API Projects\Talabat.Solution\Talabat.Services\obj\Debug\net6.0\Talabat..D0FE60AD.Up2Date

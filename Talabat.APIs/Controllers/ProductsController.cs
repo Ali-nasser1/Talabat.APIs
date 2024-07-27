@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.DTOs;
@@ -29,6 +31,7 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IReadOnlyList<Pagination<ProductToReturnDto>>>> GetProducts([FromQuery]ProductSpecParams Params)
         {
             var spec = new ProductWithBrandAndTypeSpecifications(Params);
