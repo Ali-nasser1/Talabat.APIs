@@ -3,7 +3,9 @@ using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
 using Talabat.Core;
 using Talabat.Core.Repositories;
+using Talabat.Core.Services;
 using Talabat.Repository;
+using Talabat.Services;
 
 namespace Talabat.APIs.Extensions
 {
@@ -12,6 +14,7 @@ namespace Talabat.APIs.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection Services)
         {
             Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            Services.AddScoped<IOrderService, OrderService>();
             Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             Services.AddAutoMapper(typeof(MappingProfiles));
             #region Error handling
