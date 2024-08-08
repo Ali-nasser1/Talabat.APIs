@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.DTOs;
 using Talabat.APIs.Errors;
+using Talabat.Core;
 using Talabat.Core.Entities.Order_Aggregate;
 using Talabat.Core.Services;
 using Talabat.Services;
@@ -14,11 +15,13 @@ namespace Talabat.APIs.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OrdersController(IOrderService orderService, IMapper mapper)
+        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _orderService = orderService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
         [ProducesResponseType(typeof(Order),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status400BadRequest)]
@@ -57,5 +60,13 @@ namespace Talabat.APIs.Controllers
             if(Order is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, $"There is no order with this {id} for this user"));
             return Ok(Order);
         }
+
+        [HttpGet("DeliveryMethods")]
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+        {
+            var DeliveryMethods = await _unitOfWork.Repository<DeliveryMethod>().GetAllAsync();
+            return Ok(DeliveryMethods);
+        }
+
     }
 }
