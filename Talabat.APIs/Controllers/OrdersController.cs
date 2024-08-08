@@ -10,12 +10,12 @@ using Talabat.Services;
 
 namespace Talabat.APIs.Controllers
 {
-    public class OrderController : APIBaseController
+    public class OrdersController : APIBaseController
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
 
-        public OrderController(IOrderService orderService, IMapper mapper)
+        public OrdersController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
             _mapper = mapper;
@@ -43,6 +43,19 @@ namespace Talabat.APIs.Controllers
             var Orders = await _orderService.GetOrdersForSpecificUserAsync(BuyerEmail);
             if (Orders is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, "There is no orders for this user"));
             return Ok(Orders);
+        }
+
+        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [HttpGet("{id}")]
+        [Authorize]
+
+        public async Task<ActionResult<Order>> GetOrderByIdForUser(int id)
+        {
+            var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
+            var Order = await _orderService.GetOrderByIdForSpecificUserAsync(BuyerEmail, id);
+            if(Order is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, $"There is no order with this {id} for this user"));
+            return Ok(Order);
         }
     }
 }

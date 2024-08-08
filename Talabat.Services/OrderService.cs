@@ -49,9 +49,11 @@ namespace Talabat.Services
             return order;
         }
 
-        public Task<Order> GetOrderByIdForSpecificUserAsync(string buyerId, int orderId)
+        public Task<Order> GetOrderByIdForSpecificUserAsync(string buyerEmail, int orderId)
         {
-            throw new NotImplementedException();
+            var Spec = new OrderSpecifications(buyerEmail, orderId);
+            var Order = _unitOfWork.Repository<Order>().GetByIdWithSpecAsync(Spec);
+            return Order;
         }
 
         public Task<IReadOnlyList<Order>> GetOrdersForSpecificUserAsync(string buyerEmail)
