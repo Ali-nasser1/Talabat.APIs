@@ -23,10 +23,10 @@ namespace Talabat.APIs.Controllers
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        [ProducesResponseType(typeof(Order),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status400BadRequest)]
         [HttpPost]
         [Authorize]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(OrderToReturnDto),StatusCodes.Status200OK)]
         public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
         {
             var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
@@ -36,29 +36,30 @@ namespace Talabat.APIs.Controllers
             return Ok(Order);
         }
 
-        [ProducesResponseType(typeof(IReadOnlyList<Order>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+        [ProducesResponseType(typeof(IReadOnlyList<OrderToReturnDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser()
         {
             var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
-            var Orders = await _orderService.GetOrdersForSpecificUserAsync(BuyerEmail);
-            if (Orders is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, "There is no orders for this user"));
-            return Ok(Orders);
+            var orders = await _orderService.GetOrdersForSpecificUserAsync(BuyerEmail);
+            if (orders is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, "There is no orders for this user"));
+            var MappedOrders = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDto>>(orders);
+            return Ok(MappedOrders);
         }
 
-        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         [Authorize]
-
-        public async Task<ActionResult<Order>> GetOrderByIdForUser(int id)
+        [ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<OrderToReturnDto>> GetOrderByIdForUser(int id)
         {
             var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
-            var Order = await _orderService.GetOrderByIdForSpecificUserAsync(BuyerEmail, id);
-            if(Order is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, $"There is no order with this {id} for this user"));
-            return Ok(Order);
+            var order = await _orderService.GetOrderByIdForSpecificUserAsync(BuyerEmail, id);
+            if(order is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, $"There is no order with this {id} for this user"));
+            var MappedOrder = _mapper.Map<Order, OrderToReturnDto>(order);
+            return Ok(MappedOrder);
         }
 
         [HttpGet("DeliveryMethods")]
