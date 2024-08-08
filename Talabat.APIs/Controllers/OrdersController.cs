@@ -6,6 +6,7 @@ using Talabat.APIs.DTOs;
 using Talabat.APIs.Errors;
 using Talabat.Core.Entities.Order_Aggregate;
 using Talabat.Core.Services;
+using Talabat.Services;
 
 namespace Talabat.APIs.Controllers
 {
@@ -30,6 +31,18 @@ namespace Talabat.APIs.Controllers
             var Order = await _orderService.CreateOrderAsync(BuyerEmail, orderDto.BasketId, orderDto.DeliveryMethodId, MappedAddress);
             if(Order is null) return BadRequest(new ApiResponse(400, "There is a problem with your order !"));
             return Ok(Order);
+        }
+
+        [ProducesResponseType(typeof(IReadOnlyList<Order>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+        {
+            var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
+            var Orders = await _orderService.GetOrdersForSpecificUserAsync(BuyerEmail);
+            if (Orders is null) return NotFound(new ApiResponse(StatusCodes.Status404NotFound, "There is no orders for this user"));
+            return Ok(Orders);
         }
     }
 }
