@@ -30,7 +30,7 @@ namespace Talabat.APIs.Controllers
         public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
         {
             var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
-            var MappedAddress = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
+            var MappedAddress = _mapper.Map<AddressDto, Address>(orderDto.shipToAddress);
             var Order = await _orderService.CreateOrderAsync(BuyerEmail, orderDto.BasketId, orderDto.DeliveryMethodId, MappedAddress);
             if(Order is null) return BadRequest(new ApiResponse(400, "There is a problem with your order !"));
             return Ok(Order);

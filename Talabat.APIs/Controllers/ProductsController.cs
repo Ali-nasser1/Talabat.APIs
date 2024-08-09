@@ -25,7 +25,7 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IReadOnlyList<Pagination<ProductToReturnDto>>>> GetProducts([FromQuery]ProductSpecParams Params)
         {
             var spec = new ProductWithBrandAndTypeSpecifications(Params);
@@ -42,7 +42,7 @@ namespace Talabat.APIs.Controllers
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductWithBrandAndTypeSpecifications(id);
-            var Product = await _unitOfWork.Repository<Product>().GetByIdWithSpecAsync(spec);
+            var Product = await _unitOfWork.Repository<Product>().GetEntityWithSpecAsync(spec);
             if (Product is null) return NotFound(new ApiResponse(404));
             var MappedProduct = _mapper.Map<Product, ProductToReturnDto>(Product);
             return Ok(MappedProduct);

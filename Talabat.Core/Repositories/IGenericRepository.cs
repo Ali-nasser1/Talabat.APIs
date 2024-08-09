@@ -18,10 +18,13 @@ namespace Talabat.Core.Repositories
 
         #region With Specification
         Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecifications<T> spec);
-        Task<T> GetByIdWithSpecAsync(ISpecifications<T> spec);
+        Task<T> GetEntityWithSpecAsync(ISpecifications<T> spec);
         #endregion
 
         Task<int> GetCountWithSpecAsync(ISpecifications<T> spec);
         Task AddAsync(T item); 
+
+        void Delete(T item);
+        void Update(T item);
     }
 }

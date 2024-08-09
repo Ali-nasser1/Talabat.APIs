@@ -21,7 +21,7 @@ namespace Talabat.APIs.Controllers
             _paymentService = paymentService;
             _mapper = mapper;
         }
-        [HttpPost]
+        [HttpPost("{basketId}")]
         [ProducesResponseType(typeof(CustomerBasketDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<CustomerBasketDto>> CreateOrUpdatePaymentIntent(string basketId)
