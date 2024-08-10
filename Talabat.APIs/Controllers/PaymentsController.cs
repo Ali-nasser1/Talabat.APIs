@@ -10,7 +10,6 @@ using Talabat.Core.Services;
 
 namespace Talabat.APIs.Controllers
 {
-    [Authorize]
     public class PaymentsController : APIBaseController
     {
         private readonly IPaymentService _paymentService;
@@ -23,6 +22,7 @@ namespace Talabat.APIs.Controllers
             _paymentService = paymentService;
             _mapper = mapper;
         }
+        [Authorize]
         [HttpPost("{basketId}")]
         [ProducesResponseType(typeof(CustomerBasketDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -43,17 +43,16 @@ namespace Talabat.APIs.Controllers
                 var stripeEvent = EventUtility.ConstructEvent(json,
                     Request.Headers["Stripe-Signature"], endpointSecret);
 
+                var PaymentIntent = stripeEvent.Data.Object as PaymentIntent;
                 // Handle the event
                 if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
                 {
+                   await _paymentService.UpdatePaymentIntentToSucceedOrFailed(PaymentIntent.Id, false);
                 }
                 else if (stripeEvent.Type == Events.PaymentIntentSucceeded)
                 {
-                }
-                // ... handle other event types
-                else
-                {
-                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                    await _paymentService.UpdatePaymentIntentToSucceedOrFailed(PaymentIntent.Id, true);
+
                 }
 
                 return Ok();
